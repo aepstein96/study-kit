@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+
+# Cloudflare local state
+.wrangler/
+
+# Data tiers that can be fetched or derived again. No trailing slash: on a shared machine
+# data/raw can be a symlink to one common copy, and a symlink is not a directory to git.
+**/data/raw
+**/data/interim
+**/data/processed
+**/data/external
+
+# Secrets
+.env
+
+# OS
+.DS_Store
+
+# Verification screenshots
+**/verification.png

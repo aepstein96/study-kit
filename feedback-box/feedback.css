@@ -1,0 +1,64 @@
+/* Feedback box — leans on each study's theme vars, with fallbacks for pages
+   that don't define them. Scoped under .fb- to avoid collisions. */
+.fb {
+  margin-top: 40px;
+  padding: 18px 20px 20px;
+  background: var(--card, rgba(127, 127, 127, 0.08));
+  border-radius: 12px;
+}
+.fb-h { font-size: 1rem; margin: 0 0 4px; }
+.fb-sub { color: var(--muted, #6b7280); font-size: 0.85rem; margin: 0 0 12px; }
+.fb-text {
+  width: 100%;
+  resize: vertical;
+  background: var(--bg, #fff);
+  color: var(--fg, inherit);
+  border: 1px solid var(--muted, #9aa3b2);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+}
+.fb-text:focus, .fb-name:focus { outline: 2px solid var(--accent, #4c78a8); outline-offset: 1px; }
+.fb-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.fb-name {
+  flex: 1;
+  min-width: 140px;
+  max-width: 240px;
+  background: var(--bg, #fff);
+  color: var(--fg, inherit);
+  border: 1px solid var(--muted, #9aa3b2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: inherit;
+}
+.fb-send {
+  background: var(--accent, #4c78a8);
+  color: #fff;
+  border: 1px solid var(--accent, #4c78a8);
+  border-radius: 8px;
+  padding: 6px 16px;
+  cursor: pointer;
+  font: inherit;
+}
+.fb-send:disabled { opacity: 0.5; cursor: default; }
+.fb-note { font-size: 0.85rem; margin: 8px 0 0; }
+.fb-jump {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  background: var(--accent, #4c78a8);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.fb-jump:hover { filter: brightness(1.1); }
+/* ponytail: hidden on narrow screens where it would overlap the title; phones scroll anyway */
+@media (max-width: 560px) { .fb-jump { display: none; } }
+.fb-ok { color: var(--accent, #4c78a8); }
+.fb-err { color: var(--accent2, #e4572e); }

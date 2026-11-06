@@ -1,0 +1,5 @@
+/* Study-specific styles only. The base theme — CSS variables, page shell, chart and
+   tooltip classes, buttons, tiles, and the explainer classes (.callout / details.explain
+   / .cap / .method) — lives in study-kit/study-theme/theme.css and is imported first in
+   main.tsx. Add rules here only for things unique to this study; override the theme
+   freely (this file cascades after it). */

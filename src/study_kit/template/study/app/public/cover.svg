@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" role="img"
+     aria-label="REPLACE: one-line description of what this plate depicts">
+  <!-- The study's index plate, drawn by Claude. Standard: 500x300 viewBox, transparent
+       background (no <rect> filling the canvas), dark-mode styles INSIDE this file, and a
+       figure drawn from the study's actual subject — a small diagram of the real thing, not
+       clip-art. Replace everything below the <style> block.
+       Reach for the `opendesign:svg-design` skill when drawing it. -->
+  <style>
+    .ink    { stroke: #1a1a2e; fill: none; }
+    .accent { stroke: #3574d4; fill: none; }
+    .warm   { stroke: #e4572e; fill: none; }
+    .axis   { stroke: #8a867c; stroke-width: 1; fill: none; }
+    text    { fill: #6b7280; font: 12px ui-monospace, Menlo, monospace; }
+    @media (prefers-color-scheme: dark) {
+      .ink  { stroke: #e8eaf0; }
+      .axis { stroke: #6b7180; }
+      text  { fill: #9aa3b2; }
+    }
+  </style>
+
+  <!-- REPLACE from here: placeholder axes + a curve, so an un-drawn cover is obviously unfinished. -->
+  <path class="axis" d="M60 250 H450 M60 250 V50" />
+  <path class="accent" stroke-width="2" d="M60 220 C 160 200, 240 120, 450 70" />
+  <text x="60" y="275">replace this plate</text>
+</svg>

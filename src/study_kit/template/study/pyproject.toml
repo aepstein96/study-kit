@@ -1,0 +1,15 @@
+[project]
+name = "study"
+version = "0.1.0"
+description = "A research study."
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "study-kit",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+study-kit = { git = "https://github.com/{{KIT_REPO}}", tag = "{{KIT_TAG}}" }
