@@ -26,7 +26,8 @@ study-kit deploy               # every study to its own Cloudflare Pages site, p
 ```
 my-project/
   project.json          title, description
-  CLAUDE.md             imports the guide, AGENTS.md, and your machine's own context
+  CLAUDE.md             imports the guide and AGENTS.md
+  CLAUDE.local.md       gitignored: optional link to your lesson list (study-kit setup --lessons <path>)
   AGENTS.md             knowledge specific to this project
   first-study/
     study.json          title, two-sentence description, random URL key

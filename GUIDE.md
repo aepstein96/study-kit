@@ -99,5 +99,5 @@ it without an explicit human request.
 ## Lessons
 
 - **Specific to this project** (a data quirk, a domain fact): the project's `AGENTS.md`.
-- **Would hold in an unrelated project:** the central lesson list, which each machine loads through
-  `~/.config/study-kit/context.md`.
+- **Would hold in an unrelated project:** the central lesson list, which a machine loads through a
+  gitignored `CLAUDE.local.md` (`study-kit setup --lessons <path>`).

@@ -154,17 +154,23 @@ def cmd_bump(a) -> int:
 
 
 def cmd_setup(a) -> int:
-    """Write the machine-local file every project's CLAUDE.md imports. Not in any repo."""
-    d = Path.home() / ".config" / "study-kit"
-    d.mkdir(parents=True, exist_ok=True)
-    lines = ["# Machine-local context for study-kit projects. Not part of any repo.\n"]
+    """Load a lesson list in this project on this machine, without putting it in the repo.
+
+    Claude Code auto-loads a gitignored CLAUDE.local.md, so a symlink to the list works everywhere.
+    An @import of a path outside the project does not: it needs interactive approval, and without
+    it a non-interactive session runs with no lessons and no error (measured with `claude -p`).
+    """
+    root = project_root()
     if a.lessons:
         lessons = Path(a.lessons).expanduser().resolve()
         if not lessons.exists():
             sys.exit(f"study-kit: no lessons file at {lessons}")
-        lines.append(f"@{lessons}\n")
-    (d / "context.md").write_text("".join(lines))
-    print(f"wrote {d / 'context.md'}")
+        link = root / "CLAUDE.local.md"
+        if link.exists() and not link.is_symlink():
+            sys.exit(f"study-kit: {link} exists and is a real file; not replacing it")
+        link.unlink(missing_ok=True)
+        link.symlink_to(lessons)
+        print(f"{link} -> {lessons}")
     return 0
 
 

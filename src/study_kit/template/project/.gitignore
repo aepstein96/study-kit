@@ -17,8 +17,9 @@ dist/
 **/data/processed
 **/data/external
 
-# Secrets
+# Secrets and machine-local Claude context (`study-kit setup --lessons` links the lesson list here)
 .env
+CLAUDE.local.md
 
 # OS
 .DS_Store
