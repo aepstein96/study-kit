@@ -4,6 +4,9 @@ Run many small research studies from one project. Each study turns a question in
 data, an analysis you can audit, and a static interactive app published as its own site. Built to be
 driven by Claude Code, and usable without it.
 
+Pairs with [lesson-engine](https://github.com/aepstein96/lesson-engine), which turns your sessions into
+lessons that load into future ones. Neither requires the other.
+
 ```bash
 uv tool install git+https://github.com/aepstein96/study-kit
 study-kit init my-project --title "My project"
@@ -27,7 +30,6 @@ study-kit deploy               # every study to its own Cloudflare Pages site, p
 my-project/
   project.json          title, description
   CLAUDE.md             imports the guide and AGENTS.md
-  CLAUDE.local.md       gitignored: optional link to your lesson list (study-kit setup --lessons <path>)
   AGENTS.md             knowledge specific to this project
   first-study/
     study.json          title, two-sentence description, random URL key

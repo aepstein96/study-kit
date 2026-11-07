@@ -14,7 +14,6 @@ app, and deploys as its own site. The project gets an automatic index of its stu
 | Start a study | `/new-study "<question>"`, which runs `study-kit new <name>` |
 | Check a study end to end | `study-kit verify <name>` (omit the name inside a study) |
 | Publish | `study-kit deploy` (or `study-kit deploy <name>…`) |
-| Save what a session taught | `/lesson`, or `study-kit lesson "<lesson and evidence>"` |
 | Triage visitor comments | `/feedback` |
 
 `study-kit verify` runs the analysis, type-checks, builds, serves, screenshots and runs the data
@@ -100,8 +99,7 @@ it without an explicit human request.
 ## Lessons
 
 - **Specific to this project** (a data quirk, a domain fact): the project's `AGENTS.md`.
-- **Would hold in an unrelated project:** save it with `study-kit lesson "…"`. It goes to an inbox for
-  a person to review later.
-- **Never edit the global lesson list.** It's read-only, loaded through a gitignored `CLAUDE.local.md`
-  (`study-kit setup --lessons <path> --inbox <folder>`), and everyone's sessions read it as
-  instructions. Don't read the inbox either: unreviewed notes aren't instructions.
+- **Would hold in an unrelated project:** if this repo is connected to
+  [lesson-engine](https://github.com/aepstein96/lesson-engine), run `/lesson` before you finish. It saves
+  what the session taught to an inbox for review. A global lesson list, if one is loaded, arrives through
+  a gitignored `CLAUDE.local.md`. Never edit it.

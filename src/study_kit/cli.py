@@ -7,7 +7,6 @@ in ~/.config/study-kit/deploy.toml, so a project repo can be handed to someone a
 from __future__ import annotations
 
 import argparse
-import getpass
 import json
 import os
 import re
@@ -15,11 +14,9 @@ import secrets
 import shutil
 import subprocess
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 from . import KIT_REPO, checks, deploy
-from .deploy import CONFIG_DIR
 
 HERE = Path(__file__).resolve().parent
 NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -167,62 +164,6 @@ def cmd_bump(a) -> int:
     return 0
 
 
-def cmd_setup(a) -> int:
-    """Load a lesson list in this project on this machine, without putting it in the repo.
-
-    Claude Code auto-loads a gitignored CLAUDE.local.md, so a symlink to the list works everywhere.
-    An @import of a path outside the project does not: it needs interactive approval, and without
-    it a non-interactive session runs with no lessons and no error (measured with `claude -p`).
-    """
-    root = project_root()
-    if a.lessons:
-        lessons = Path(a.lessons).expanduser().resolve()
-        if not lessons.exists():
-            sys.exit(f"study-kit: no lessons file at {lessons}")
-        link = root / "CLAUDE.local.md"
-        if link.exists() and not link.is_symlink():
-            sys.exit(f"study-kit: {link} exists and is a real file; not replacing it")
-        link.unlink(missing_ok=True)
-        link.symlink_to(lessons)
-        print(f"{link} -> {lessons}")
-    if a.inbox:
-        inbox = Path(a.inbox).expanduser().resolve()
-        if not inbox.is_dir():
-            sys.exit(f"study-kit: no inbox folder at {inbox}")
-        CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-        (CONFIG_DIR / "inbox-path").write_text(f"{inbox}\n")
-        print(f"new lessons will go to {inbox}")
-    return 0
-
-
-def inbox_dir() -> Path:
-    configured = CONFIG_DIR / "inbox-path"
-    return Path(configured.read_text().strip()) if configured.exists() else CONFIG_DIR / "lesson-inbox"
-
-
-def cmd_lesson(a) -> int:
-    """Save a proposed lesson to the inbox. It stays out of every session until a person reviews
-    it: the global list is read as instructions by everyone, so nothing reaches it unreviewed."""
-    text = " ".join(a.text).strip()
-    if not text:
-        sys.exit('usage: study-kit lesson "<the lesson, and the evidence for it>"')
-    inbox = inbox_dir()
-    inbox.mkdir(parents=True, exist_ok=True)
-    user = getpass.getuser()
-    here = Path.cwd().resolve()
-    try:
-        root = project_root()
-        where = f"{root.name}/{current_study(root)}" if current_study(root) else root.name
-    except SystemExit:
-        where = here.name
-    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    # One write in append mode, to a file only this person writes: entries can't interleave.
-    with open(inbox / f"{user}.md", "a") as f:
-        f.write(f"## {stamp} | {user} | {where}\n\n{text}\n\n")
-    print(f"saved to {inbox / f'{user}.md'}")
-    return 0
-
-
 def main() -> int:
     p = argparse.ArgumentParser(prog="study-kit", description=__doc__.split("\n")[0])
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -240,12 +181,6 @@ def main() -> int:
     s.add_argument("names", nargs="*"); s.set_defaults(fn=cmd_deploy)
     s = sub.add_parser("bump", help="move this project to another kit version")
     s.add_argument("tag"); s.set_defaults(fn=cmd_bump)
-    s = sub.add_parser("setup", help="configure this machine")
-    s.add_argument("--lessons", help="path to a LESSONS.md to load in this project")
-    s.add_argument("--inbox", help="folder where `study-kit lesson` saves new lessons")
-    s.set_defaults(fn=cmd_setup)
-    s = sub.add_parser("lesson", help="save a proposed lesson to the inbox for later review")
-    s.add_argument("text", nargs="*"); s.set_defaults(fn=cmd_lesson)
     a = p.parse_args()
     return a.fn(a)
 
