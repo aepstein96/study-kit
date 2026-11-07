@@ -14,6 +14,7 @@ app, and deploys as its own site. The project gets an automatic index of its stu
 | Start a study | `/new-study "<question>"`, which runs `study-kit new <name>` |
 | Check a study end to end | `study-kit verify <name>` (omit the name inside a study) |
 | Publish | `study-kit deploy` (or `study-kit deploy <name>…`) |
+| Save what a session taught | `/lesson`, or `study-kit lesson "<lesson and evidence>"` |
 | Triage visitor comments | `/feedback` |
 
 `study-kit verify` runs the analysis, type-checks, builds, serves, screenshots and runs the data
@@ -30,8 +31,8 @@ checks, using the study's own toolchain. Use it instead of hand-rolling those st
    (500×300 viewBox, transparent background, `prefers-color-scheme` styles inside the SVG, depicting
    the study's actual subject).
 5. **Verify with evidence.** "Done" means showing the command, output or screenshot.
-6. **Ship.** Commit and push, which does not publish anything. Publishing is `study-kit deploy`,
-   for whoever holds this project's Cloudflare login.
+6. **Ship.** Work on a branch and open a PR with `gh pr create`. Neither publishes anything. After a
+   merge, publishing is `study-kit deploy`, for whoever holds this project's Cloudflare login.
 
 ## Paths
 
@@ -99,5 +100,8 @@ it without an explicit human request.
 ## Lessons
 
 - **Specific to this project** (a data quirk, a domain fact): the project's `AGENTS.md`.
-- **Would hold in an unrelated project:** the central lesson list, which a machine loads through a
-  gitignored `CLAUDE.local.md` (`study-kit setup --lessons <path>`).
+- **Would hold in an unrelated project:** save it with `study-kit lesson "…"`. It goes to an inbox for
+  a person to review later.
+- **Never edit the global lesson list.** It's read-only, loaded through a gitignored `CLAUDE.local.md`
+  (`study-kit setup --lessons <path> --inbox <folder>`), and everyone's sessions read it as
+  instructions. Don't read the inbox either: unreviewed notes aren't instructions.
