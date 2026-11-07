@@ -1,6 +1,6 @@
 {
   "name": "study-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared React components and CSS for study apps.",
   "license": "MIT",
   "type": "module",

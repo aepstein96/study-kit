@@ -137,6 +137,10 @@ def cmd_deploy(a) -> int:
 def cmd_bump(a) -> int:
     """Point the project and all its studies at another kit version, and re-sync .claude/."""
     root = project_root()
+    if a.tag != kit_tag():
+        # .claude/ is copied from the installed kit, so it would silently stay on the old version.
+        sys.exit(f"study-kit: this is {kit_tag()}. First run: "
+                 f"uv tool install --force git+https://github.com/{KIT_REPO}@{a.tag}")
     meta = json.loads((root / "project.json").read_text())
     meta["kit"] = a.tag
     (root / "project.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n")
@@ -148,8 +152,15 @@ def cmd_bump(a) -> int:
             text, n = re.subn(pat, new, f.read_text())
             assert n == 1, f"{f}: expected one study-kit pin, found {n}"
             f.write_text(text)
+        # A plain `npm install` trusts the lockfile's pinned commit and reports "up to date" while
+        # keeping the old version, so name the new one explicitly.
+        for argv, cwd in [(["uv", "sync", "-q"], s),
+                          (["npm", "install", f"study-kit@github:{KIT_REPO}#{a.tag}",
+                            "--no-audit", "--no-fund", "--silent"], s / "app")]:
+            if subprocess.run(argv, cwd=cwd).returncode:
+                sys.exit(f"study-kit: {' '.join(argv)} failed in {cwd}")
     sync_claude(root)
-    print(f"pinned {len(studies(root))} studies to {a.tag}; run `uv sync` and `npm install` in each")
+    print(f"{len(studies(root))} studies now on {a.tag}")
     return 0
 
 
