@@ -129,6 +129,12 @@ def main():
         out = write_data_json(td, {"k": 1})
         assert out == td / "app" / "public" / "data.json"
         assert json.loads(out.read_text()) == {"k": 1}
+        # A new timestamp alone must not rewrite the file; any other change must.
+        write_data_json(td, {"meta": {"generated": "t1"}, "k": 1})
+        write_data_json(td, {"meta": {"generated": "t2"}, "k": 1})
+        assert json.loads(out.read_text())["meta"]["generated"] == "t1"
+        write_data_json(td, {"meta": {"generated": "t3"}, "k": 2})
+        assert json.loads(out.read_text()) == {"meta": {"generated": "t3"}, "k": 2}
 
         # 9. project_root finds project.json and refuses to guess outside a project.
         from research_toolkit import project_root

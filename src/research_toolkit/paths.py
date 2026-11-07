@@ -51,12 +51,27 @@ def write_data_json(study_dir: str | os.PathLike, payload: dict) -> Path:
     JSON — the browser's ``response.json()`` then rejects and the whole app sticks on
     its loading screen (one unfilled pandas value did exactly that). Fail here, loudly,
     at write time instead.
+
+    A payload that differs only in ``meta.generated`` is not written: the file is one long
+    line, so a timestamp-only rewrite makes every re-run a merge conflict between contributors.
     """
     import json
 
+    def without_stamp(p: dict) -> dict:
+        return {**p, "meta": {k: v for k, v in p["meta"].items() if k != "generated"}} \
+            if isinstance(p.get("meta"), dict) else p
+
     dest = Path(study_dir) / "app" / "public" / "data.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(payload, allow_nan=False))
+    text = json.dumps(payload, allow_nan=False)
+    if dest.exists():
+        try:
+            if without_stamp(json.loads(dest.read_text())) == without_stamp(json.loads(text)):
+                print(f"unchanged {dest}")
+                return dest
+        except json.JSONDecodeError:
+            pass  # a corrupt file gets replaced below
+    dest.write_text(text)
     print(f"wrote {dest} ({dest.stat().st_size} bytes)")
     return dest
 
