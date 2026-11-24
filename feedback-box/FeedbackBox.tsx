@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import "./feedback.css";
+import Annotations from "./Annotations";
 
+// Also mounts <Annotations>, the select-to-comment sidebar.
 // Posts to the /api/feedback Pages Function that `study-kit deploy` adds to every study site,
 // which stores comments in KV for triage via the /feedback command in Claude Code.
 //   import FeedbackBox from "study-kit/feedback-box/FeedbackBox";
@@ -40,6 +42,7 @@ export default function FeedbackBox({ study }: { study?: string }) {
 
   return (
     <>
+      <Annotations study={slug} />
       <button className="fb-jump" onClick={jump}>Leave Feedback</button>
       <section className="fb" ref={boxRef}>
       <h2 className="fb-h">Feedback</h2>

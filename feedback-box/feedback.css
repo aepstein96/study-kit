@@ -62,3 +62,90 @@
 @media (max-width: 560px) { .fb-jump { display: none; } }
 .fb-ok { color: var(--accent, #4c78a8); }
 .fb-err { color: var(--accent2, #e4572e); }
+
+/* Inline comments (Annotations.tsx). Scoped under .ann-. Amber is the comments' own colour:
+   highlights, margin marks, the toggle; the study's accent stays with the study. */
+.ann-ui { --ann: #f5a524; --ann-ink: #1a1a2e; }
+::highlight(ann) { background-color: rgba(255, 196, 0, 0.32); }
+::highlight(ann-active) { background-color: rgba(255, 166, 0, 0.45); }
+[data-ann-fig] { outline: 2px dashed rgba(255, 166, 0, 0.7); outline-offset: 4px; }
+[data-ann-fig="active"] { outline-style: solid; }
+.ann-ui button { font: inherit; cursor: pointer; }
+.ann-ui button:focus-visible { outline: 2px solid var(--accent, #4c78a8); outline-offset: 2px; }
+.ann-pop {
+  position: absolute; z-index: 30; transform: translateX(-100%);
+  background: var(--fg, #1a1a2e); color: var(--bg, #fff); border: none; border-radius: 6px;
+  padding: 4px 10px; font-size: 0.8rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+/* The margin: a "+" beside the hovered block, and a count tab wherever comments already sit. */
+.ann-add, .ann-mark {
+  position: absolute; z-index: 15; height: 24px; min-width: 24px; box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center; border-radius: 12px;
+}
+.ann-add {
+  padding: 0; gap: 0; background: var(--bg, #fff); color: var(--fg, #1a1a2e);
+  border: 1.5px solid var(--ann); font-size: 0.8rem; overflow: hidden; white-space: nowrap;
+}
+.ann-add > span:first-child { width: 21px; font-size: 1.05rem; line-height: 1; font-weight: 600; color: var(--ann); }
+.ann-add-l { max-width: 0; transition: max-width 0.15s ease, padding 0.15s ease; }
+.ann-add:hover, .ann-add:focus-visible { background: var(--ann); color: var(--ann-ink); }
+.ann-add:hover > span:first-child, .ann-add:focus-visible > span:first-child { color: var(--ann-ink); }
+.ann-add:hover .ann-add-l, .ann-add:focus-visible .ann-add-l { max-width: 160px; padding-right: 9px; }
+.ann-mark {
+  padding: 0 7px; background: var(--ann); color: var(--ann-ink); border: none;
+  font-size: 0.75rem; font-weight: 700; border-radius: 12px 12px 12px 3px;
+}
+.ann-mark.ann-on { outline: 2px solid var(--fg, #1a1a2e); outline-offset: 1px; }
+.ann-coach {
+  position: fixed; right: 16px; bottom: 62px; z-index: 25; width: min(280px, calc(100vw - 32px));
+  box-sizing: border-box; padding: 12px 14px; border-radius: 10px;
+  background: var(--bg, #fff); color: var(--fg, inherit); border: 1.5px solid var(--ann);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18); font-size: 0.85rem;
+}
+.ann-coach p { margin: 0 0 6px; }
+.ann-coach p:first-child { font-weight: 600; }
+.ann-coach-how { color: var(--muted, #6b7280); }
+.ann-coach .ann-link { padding: 0; }
+@media (prefers-reduced-motion: reduce) { .ann-add-l { transition: none; } }
+.ann-toggle {
+  position: fixed; bottom: 16px; right: 16px; z-index: 25;
+  background: var(--ann); color: var(--ann-ink); border: none; border-radius: 999px;
+  padding: 7px 16px; font-size: 0.85rem; font-weight: 600; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.ann-side {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 20; width: min(340px, 92vw);
+  overflow-y: auto; box-sizing: border-box; padding: 16px 16px 64px;
+  background: var(--bg, #fff); color: var(--fg, inherit);
+  border-left: 1px solid var(--line, rgba(127, 127, 127, 0.3)); box-shadow: -4px 0 16px rgba(0, 0, 0, 0.12);
+  font-size: 0.9rem;
+}
+/* Wide screens: make room for the sidebar instead of covering the page. */
+@media (min-width: 1100px) { html.ann-open body { margin-right: 340px; } }
+.ann-h { font-size: 1rem; margin: 0 0 10px; }
+.ann-h3 { font-size: 0.9rem; margin: 18px 0 4px; }
+.ann-hint { color: var(--muted, #6b7280); font-size: 0.82rem; margin: 0 0 12px; }
+.ann-list { list-style: none; margin: 0; padding: 0; }
+.ann-card {
+  padding: 10px 12px; margin: 0 0 8px; border-radius: 8px; cursor: pointer;
+  background: var(--card, rgba(127, 127, 127, 0.08)); border: 1px solid transparent;
+}
+.ann-card.ann-on { border-color: var(--ann); }
+.ann-card.ann-done { opacity: 0.6; }
+.ann-ui blockquote {
+  margin: 0 0 6px; padding: 0 0 0 8px; border-left: 3px solid var(--ann);
+  color: var(--muted, #6b7280); font-size: 0.8rem;
+}
+.ann-ui blockquote.ann-fig { font-style: italic; }
+.ann-text { margin: 0 0 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ann-meta { margin: 0; color: var(--muted, #6b7280); font-size: 0.75rem; }
+.ann-reply { margin: 6px 0 0; padding: 6px 8px; border-radius: 6px; background: var(--bg, #fff); font-size: 0.82rem; white-space: pre-wrap; }
+.ann-compose { margin: 0 0 16px; }
+.ann-compose textarea {
+  width: 100%; box-sizing: border-box; resize: vertical; font: inherit; padding: 8px 10px;
+  background: var(--bg, #fff); color: var(--fg, inherit); border: 1px solid var(--muted, #9aa3b2); border-radius: 8px;
+}
+.ann-row { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+.ann-btn { background: var(--accent, #4c78a8); color: #fff; border: none; border-radius: 8px; padding: 5px 14px; }
+.ann-btn:disabled { opacity: 0.5; cursor: default; }
+.ann-link { background: none; border: none; padding: 0 0 0 8px; color: var(--accent, #4c78a8); font-size: inherit; text-decoration: underline; }
+.ann-err { color: var(--accent2, #e4572e); font-size: 0.82rem; }
