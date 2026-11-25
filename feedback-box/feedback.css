@@ -60,6 +60,10 @@
 .fb-jump:hover { filter: brightness(1.1); }
 /* ponytail: hidden on narrow screens where it would overlap the title; phones scroll anyway */
 @media (max-width: 560px) { .fb-jump { display: none; } }
+/* The button is fixed about 130px wide at the top right, so on screens narrower than about 1110px
+   it reaches the theme's 860px column and covers the end of the page title. Give the title room
+   there; the title wraps instead. (feedback.css only loads on pages that mount FeedbackBox.) */
+@media (min-width: 561px) and (max-width: 1110px) { h1 { padding-inline-end: 150px; } }
 .fb-ok { color: var(--accent, #4c78a8); }
 .fb-err { color: var(--accent2, #e4572e); }
 
